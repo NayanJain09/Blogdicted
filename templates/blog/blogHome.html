@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}BlogHome{% endblock title%}
+{% block blogactive %}active {% endblock blogactive %}
+{% block body %}
+<!-- width: 30% -->
+ <div class="container-fluid" style="margin-left: 1%;padding-left: 1%;margin-right: 1%;padding-right: 1%;">
+    <div class="my-2">
+        <h2>Categories :</h2>
+        <br>    
+       {% for category in categories %}
+        <span class="badge badge-secondary mb-1" id="cat" style="background-color:slateblue;font-size: medium;"><a href="/blog/category/{{category.title}}" class="text-light">{{category.title}}</a></span>
+        {% endfor %}
+    </div>
+    <!-- width:65% -->
+    <div id="posts" style="margin-left: 1%;margin-top: 1%;margin-right: 3%;">
+      <br>
+        <h3>Articles Posted:</h3>
+       {% for post in posts%}
+       <div class="no-gutters border rounded overflow-hidden mb-4 shadow-sm h-md-250 my-4 position-relative">
+        <div class="col p-4 d-flex flex-column position-static">
+            <a class="text-dark" href="/blog/{{post.slug}}"><h3 class="mb-0">{{post.title}}</h3></a>
+            <div class="mb-1 text-muted"><span class="badge badge-secondary">{{post.timeStamp}}</span> | Article by <a class="text-dark" href="/profile/{{post.author.username}}">{{post.author}}</a><span > | {{post.views}} views</span></div>
+            <div class="mb-1 text-muted" style="font-size: large;">
+                Categories :&nbsp;    
+               {% for category in post.categories.all %}
+                <span class="badge badge-secondary" id="btog" style="background-color: black;"><a href="/category/{{category.title}}" class="text-light">{{category.title}}</a></span>
+                {% endfor %}
+            </div>
+            <p class="card-text mb-1 mt-3" style="font-size: larger;">{{post.content| striptags |safe | truncatechars:100}}</p>
+             <div class="my-1"><a href="/blog/{{post.slug}}" role="button" class="btn btn-primary">Continue reading</a></div>
+        </div>  
+    </div>
+    {% endfor %}
+    {% include "pagination.html" with page=posts %}
+<br>
+<br>    
+</div>
+
+</div>
+<br>
+<br>
+{% endblock body%}

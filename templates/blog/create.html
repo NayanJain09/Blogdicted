@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}Create Blog{% endblock title%}
+{% load static %}
+{%block body %}
+<div class="container my-3">
+  <h2>Create New Blog</h2>
+  <form method="post" action="/blog/create">
+    {% csrf_token %}
+    <div class="mb-3 form-group">
+      <label for="title" class="form-label"><b>Title</b></label>
+      <input
+        type="text"
+        class="form-control"
+        id="title"
+        name="title"
+        placeholder="Title"
+        required
+      />
+    </div>
+    <div class="mb-3">
+      <b>Categories :</b><br>
+      {% for category in categories %}
+      <span style="display: inline-block;"><input type="checkbox"  value="{{category.title}}"  name="category"> {{category.title}}&nbsp;</span>
+      {% endfor %}
+    </div>
+    <div class="mb-3 form-group">
+      <label for="mytextarea" class="form-label"><b>Body</b></label>
+      <textarea
+        class="form-control"
+        id="mytextarea"
+        name="mytextarea"
+        rows="20"
+        minlength="5"
+      ></textarea>
+    </div>
+    <div>
+      <button class="btn btn-success my-3" type="submit">Submit</button>
+    </div>
+  </form>
+</div>
+{% endblock body%}

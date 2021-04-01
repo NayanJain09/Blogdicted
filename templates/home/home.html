@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock title%}
+{% block homeactive %} active {%endblock homeactive %}
+{% block body %}
+<div class="container">
+    <div style="text-align: center;">
+    <p><u><h1><span style="color: rgb(214, 25, 88);">WELCOME</span>
+        <span style="color: slateblue;"> TO </span><span style="color: orangered;">BLOGDICTED</span></h1></u></p>
+    <p><b><h3>EXPLORE.LEARN.SHARE</h3></b></p>
+    <a class="btn btn-outline-dark btn-lg" href="/blog/create" role="button">Create Blog</a>
+    </div>
+</div>
+<br>
+<div class="container">
+    <div class="mb-1">
+        <h2>Categories :</h2>    
+       {% for category in categories %}
+        <span class="badge badge-secondary mb-1" id="cat" style="background-color:rgb(214, 25, 88);font-size: medium;"><a href="/blog/category/{{category.title}}" class="text-light">{{category.title}}</a></span>
+        {% endfor %}
+    </div>
+    <br>
+    <h2>Popular Blogposts</h2>
+    {% for post in posts  %}
+    <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm  my-4 position-relative" >
+        <div class="col p-4 d-flex flex-column position-static">
+            <a class="text-dark" href="/blog/{{post.slug}}"><h3 class="mb-0">{{post.title}}</h3></a>
+            <div class="mb-1 text-muted"><span class="badge badge-secondary">{{post.timeStamp}}</span> | Article by <a class="text-dark" href="/profile/{{post.author.username}}">{{post.author}}</a><span > | {{post.views}} views</span></div>
+            <div class="mb-1 text-muted" style="font-size: large;">
+             Categories :&nbsp;    
+            {% for category in post.categories.all %}
+             <span class="badge badge-secondary" id="btog" style="background-color: black;"><a href="/blog/category/{{category.title}}" class="text-light">{{category.title}}</a></span>
+             {% endfor %}
+            </div>
+             <br>
+            <p class="card-text mb-1">{{post.content| striptags |safe | truncatechars:100}}</p>
+            <div class="mt-3">
+            	<a href="/blog/{{post.slug}}" role="button" class="btn btn-primary">Continue reading</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    <div class="justify-content-center" style="text-align: center;">{% include "pagination.html" with page=posts %}</div>
+    <br>
+    <br>
+</div>
+    
+{% endblock body%}

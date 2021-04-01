@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}About{% endblock title%}
+{% block aboutactive %} active {%endblock aboutactive %}
+{% block body %}
+ <div class="container-fluid">
+      <div class="my-2">
+        <b>
+        <h2><span style="color: slateblue"><u>About {{author.username}}:</u></span></h2>  
+        <p style="font-size: large;"><span style="color: black">Name : </span><span style="color: steelblue">{{author.get_full_name}}</span></p>
+        <p style="font-size: large;"><span style="color: black">Email : </span><span style="color: steelblue">{{author.email}}</span></p>
+        <p style="font-size: large;"><span style="color: black">No. of Posts : </span><span style="color: steelblue">{{posts.count}}</span></p>
+        </b>
+      </div>
+      <hr>
+     <div style="margin-top: 1%">
+       <h3>Articles Posted :</h3>
+       <br>
+        {% for post in posts%}
+       <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 my-4 position-relative">
+        <div class="col p-4 d-flex flex-column position-static">
+            <strong class="d-inline-block mb-2 text-primary">Article  by {{post.author}}</strong>
+            <a class="text-dark" href="/blog/{{post.slug}}"><h3 class="mb-0">{{post.title}}</h3></a>
+            <div class="mb-1 text-muted">{{post.timeStamp}}</div>
+            <div class="mb-1 text-muted" style="font-size: large;">
+              Categories :&nbsp;    
+             {% for category in post.categories.all %}
+              <span class="badge badge-secondary" style="background-color: black;"><a href="/category/{{category.title}}" class="text-light">{{category.title}}</a></span>
+              {% endfor %}
+          </div>
+          <br>
+            <p class="card-text mb-auto">{{post.content| striptags |safe | truncatechars:100}}</p>
+            <div class="my-2">
+            	<a href="/blog/{{post.slug}}" role="button" class="btn btn-primary">Continue reading</a>
+            </div>
+            
+        </div>
+      </div>
+      {%endfor%}
+     </div>
+ </div>
+{% endblock body%}
