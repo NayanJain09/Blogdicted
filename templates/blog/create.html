@@ -1,13 +1,42 @@
 {% extends 'base.html' %}
 {% block title %}Create Blog{% endblock title%}
 {% load static %}
+{%block script%}
+    <script
+      src="https://cdn.tiny.cloud/1/uok9v2ij8osebfp38nm4epqee9t6b86i0kx505dfz2xv390g/tinymce/5/tinymce.min.js"
+      referrerpolicy="origin"
+    ></script>
+    <script>
+      tinymce.init({
+        selector: "#mytextarea",
+        plugins: [
+          "advlist autolink link image lists charmap print preview hr anchor pagebreak",
+          "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+          "table emoticons template paste help",
+        ],
+        toolbar:
+          "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | " +
+          "bullist numlist outdent indent | link image | print preview media fullpage | " +
+          "forecolor backcolor emoticons | help",
+        menu: {
+          favs: {
+            title: "My Favorites",
+            items: "code visualaid | searchreplace | emoticons",
+          },
+        },
+        menubar: "favs file edit view insert format tools table help",
+        content_css: "css/content.css",
+      });
+    </script>
+{%endblock script%}
 {%block body %}
 <div class="container my-3">
-  <h2>Create New Blog</h2>
+  <h2 style="color: teal;">Create New Blog</h2>
+  <br>
   <form method="post" action="/blog/create">
     {% csrf_token %}
     <div class="mb-3 form-group">
-      <label for="title" class="form-label"><b>Title</b></label>
+      <label for="title" class="form-label"><b><h3>Title</h3></b></label>
       <input
         type="text"
         class="form-control"
@@ -18,13 +47,13 @@
       />
     </div>
     <div class="mb-3">
-      <b>Categories :</b><br>
+      <b><h3>Categories :</h3></b><br>
       {% for category in categories %}
       <span style="display: inline-block;"><input type="checkbox"  value="{{category.title}}"  name="category"> {{category.title}}&nbsp;</span>
       {% endfor %}
     </div>
     <div class="mb-3 form-group">
-      <label for="mytextarea" class="form-label"><b>Body</b></label>
+      <label for="mytextarea" class="form-label"><b><h3>Body</h3></b></label>
       <textarea
         class="form-control"
         id="mytextarea"
@@ -34,7 +63,7 @@
       ></textarea>
     </div>
     <div>
-      <button class="btn btn-success my-3" type="submit">Submit</button>
+      <button class="btn btn-success my-3" type="submit">Post</button>
     </div>
   </form>
 </div>

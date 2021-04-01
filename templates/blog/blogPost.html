@@ -1,5 +1,9 @@
-{% extends 'base.html' %} {% block title %}BlogPost{% endblock title%} 
-{% load humanize %} {% load extras %} {% block body %} {%if post is not None%}
+{% extends 'base.html' %}
+{% block title %}BlogPost{% endblock title%} 
+{% load humanize %}
+{% load extras %} 
+{% block body %}
+{%if post is not None%}
 <div class="container my-3">
   <div class="blog-post">
     <h2 class="blog-post-title">{{post.title}}</h2>
@@ -29,13 +33,12 @@
   </div>
 </div>
 <div class="container">
-  <h2>Comments : {{comments.count}}</h2>
+  <h2>Comments : {{comments.count}}</h2><br>
   <div class="my-2">
     {% if user.is_authenticated %}
     <form action="/blog/postComment" method="post">
       {% csrf_token %}
       <div class="form-group">
-        <label for="exampleInputEmail1">Post Comment </label>
         <input
           type="text"
           class="form-control"
@@ -44,36 +47,24 @@
         />
       </div>
       <input type="hidden" name="postSno" value="{{post.sno}}" />
-      <button type="submit" class="btn btn-primary">Submit</button>
+      <button type="submit" class="btn btn-outline-dark">Post Comment</button>
     </form>
-    {% else %} Please login to post a comment {% endif %}
+    {% else %} <b><h3>Login to post a comment</h3></b> {% endif %}
+    <br>
   </div>
   {% for comment in comments %}
-  <div class="row my-3">
-    <div class="col-md-1">
-      <img
-        class="rounded mx-auto d-block w-100"
-        src="/static/img/users.png"
-        alt="user"
-        style="
-        object-fit: scale-down;
-        max-width: 100% ;
-        height: auto ;"
-      />
-    </div>
-    <div class="col-md-11">
-      <b style="font-size: large"> {{comment.user.username}} </b>
+    <div style="margin-left: 10%;">
+      <b style="font-size: large;color: slateblue;"> {{comment.user.username}} </b>
       <span class="badge badge-secondary"
         >{{comment.timestamp| naturaltime}}</span
       >
-      <div>{{comment.comment}}</div>
+      <div><b>{{comment.comment}}</b></div>
     </div>
-  </div>
   {% if user.is_authenticated %}
   <span></span>
   <button
-    class="btn btn-sm btn-primary"
-    style="margin-left: 8%"
+    class="btn btn-outline-info my-2"
+    style="margin-left: 10%"
     type="button"
     data-toggle="collapse"
     data-target="#replyBox{{comment.sno}}"
@@ -88,18 +79,18 @@
         <form action="/blog/postComment" method="post">
           {% csrf_token %}
           <div class="form-group">
-            <label for="comment">Post a reply </label>
+            <label for="reply{{comment.sno}}">Post a reply </label>
             <input
               type="text"
               class="form-control"
-              id="comment"
-              name="comment"
-              placeholder="Enter comment here"
+              id="reply{{comment.sno}}"
+              name="reply"
+              placeholder="Enter reply here"
             />
             <input
               type="hidden"
               class="form-control"
-              id="parentSno"
+              id="parentSno{{comment.sno}}"
               name="parentSno"
               value="{%if comment is not None%}{{comment.sno}}{%endif%}"
             />
@@ -107,19 +98,19 @@
           <input
             type="hidden"
             class="form-control"
-            id="postSno"
+            id="postSno{{comment.timestamp}}"
             name="postSno"
             value="{{post.sno}}"
           />
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="submit" class="btn btn-outline-primary">Submit</button>
         </form>
       </div>
     </div>
   </div>
   {% else %}
   <button
-    class="btn btn-sm btn-primary"
-    style="margin-left: 8%"
+    class="btn btn-outline-info my-2"
+    style="margin-left: 10%"
     type="button"
     data-toggle="collapse"
     data-target="#replyBox{{comment.sno}}"
@@ -131,28 +122,17 @@
   {% endif %}
   <div class="replies my-2 mx-3">
     {% for reply in replyDict|get_val:comment.sno %}
-    <div class="row my-3">
-      <div class="col-md-1">
-        <img
-          class="rounded mx-auto d-block w-75"
-          src="/static/img/user.png"
-          alt="user"
-          style=" width: auto ;
-          max-width: 100% ;
-          height: auto ;"
-        />
-      </div>
-      <div class="col-md-11">
-        <b>{{reply.user.username}} </b>
+    <div style="margin-left: 20%;">
+        <b style="color: red;">{{reply.user.username}}</b> replied 
         <span class="badge badge-secondary"
           >{{reply.timestamp| naturaltime}}</span
         >
-        <div>{{reply.comment}}</div>
-      </div>
-      <br />
+        <div><b>{{reply.comment}}</b></div>
     </div>
+    <br>
     {% endfor %}
   </div>
   {% endfor %}
 </div>
-{%endif%} {% endblock body%}
+{%endif%} 
+{% endblock body%}

@@ -37,6 +37,7 @@ def blogPost(request, slug):
         else:
             replyDict[reply.parent.sno].append(reply)
     if post is None:
+        print(post,slug,comments,replies)
         messages.warning(request,'Blog Not found!')
     if post is not None:
         post.views= post.views+1
@@ -62,17 +63,18 @@ def category(request,field):
 
 def postComment(request):
     if request.method == "POST":
-        comment=request.POST.get('comment')
         user=request.user
         postSno =request.POST.get('postSno')
         post= Post.objects.get(sno=postSno)
         parentSno= request.POST.get('parentSno')
         print('AAAAAAAAAAAAAAAAA',parentSno)
         if parentSno is None:
+            comment=request.POST.get('comment')
             comment=BlogComment(comment= comment, user=user, post=post)
             comment.save()
             messages.success(request, "Your comment has been posted successfully")
         else:
+            comment=request.POST.get('reply')
             parent = BlogComment.objects.filter(sno=parentSno).first()
             print('AAAAAAAAAAA',parent.comment)
             comment=BlogComment(comment= comment, user=user, post=post , parent=parent)
@@ -96,6 +98,8 @@ def create(request):
         fields=[]
         for category in categories:
             fields.append(Category.objects.filter(title=category).first())
+        if len(fields)==0:
+            fields.append(Category.objects.filter(title='Others').first())
         post.categories.set(fields)
         post.save()    
         print(post.title+post.slug)
@@ -107,21 +111,3 @@ def create(request):
     categories=Category.objects.all()
     context={'categories':categories}     
     return render(request,'blog/create.html',context)
-
-# def myblogs(request):
-#     posts = Post.objects.filter(author=request.user)
-#     paginator = Paginator(posts, 5) #  posts in each page
-#     page = request.GET.get('page')
-#     try:
-#         posts = paginator.page(page)
-#     except PageNotAnInteger:
-#     # If page is not an integer deliver the first page
-#         posts = paginator.page(1)
-#     except EmptyPage:
-#     # If page is out of range deliver last page of results
-#         posts = paginator.page(paginator.num_pages)
-#     context = {
-#         'page':page,
-#         'posts':posts
-#     }
-#     return render(request,'blog/myblogs.html',context)

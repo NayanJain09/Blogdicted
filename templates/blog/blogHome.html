@@ -8,13 +8,13 @@
         <h2>Categories :</h2>
         <br>    
        {% for category in categories %}
-        <span class="badge badge-secondary mb-1" id="cat" style="background-color:slateblue;font-size: medium;"><a href="/blog/category/{{category.title}}" class="text-light">{{category.title}}</a></span>
+        <span class="badge badge-secondary mb-1" id="cat" style="font-size: medium;"><a href="/blog/category/{{category.title}}" class="text-light">{{category.title}}</a></span>
         {% endfor %}
     </div>
     <!-- width:65% -->
     <div id="posts" style="margin-left: 1%;margin-top: 1%;margin-right: 3%;">
       <br>
-        <h3>Articles Posted:</h3>
+        <h3>BlogPosts:</h3>
        {% for post in posts%}
        <div class="no-gutters border rounded overflow-hidden mb-4 shadow-sm h-md-250 my-4 position-relative">
         <div class="col p-4 d-flex flex-column position-static">
