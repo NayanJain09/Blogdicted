@@ -10,10 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
-import django_heroku
+# import django_heroku
 from pathlib import Path
 from typing import cast
-from decouple import config,Csv
+from decouple import config
 # import environ
 
 # env = environ.Env(
@@ -36,7 +36,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG',default=False,cast=bool)
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
+ALLOWED_HOSTS = ['127.0.0.1', '.herokuapp.com']
 
 # Application definition
 
@@ -151,4 +151,4 @@ EMAIL_HOST_USER = config('EMAIL_USER')
 # EMAIL_HOST_PASSWORD =
 EMAIL_PORT = config('EMAIL_PORT',cast=int)
 
-django_heroku.settings(locals())
+# django_heroku.settings(locals())

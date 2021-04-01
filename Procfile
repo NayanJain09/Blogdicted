@@ -1,1 +1,1 @@
-web: gunicorn blogdicted.wsgi
+web: gunicorn blogdicted.wsgi:application --log-file -
