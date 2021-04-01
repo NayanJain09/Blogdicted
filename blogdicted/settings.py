@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
-# import django_heroku
+from django import django_heroku
 from pathlib import Path
 from typing import cast
 from decouple import config
@@ -151,4 +151,4 @@ EMAIL_HOST_USER = config('EMAIL_USER')
 # EMAIL_HOST_PASSWORD =
 EMAIL_PORT = config('EMAIL_PORT',cast=int)
 
-# django_heroku.settings(locals())
+django_heroku.settings(locals())
