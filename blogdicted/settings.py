@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-import django_heroku
+# import django_heroku
 import os
 from pathlib import Path
 from typing import cast
@@ -31,11 +31,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
+# SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = '@j5^_--mr570g$@z%*fgfi97f7s)^rv6f$8d#9+3ap3)oi15e-'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG',default=False,cast=bool)
-
+DEBUG = False
 ALLOWED_HOSTS = ['127.0.0.1', '.herokuapp.com']
 
 # Application definition
@@ -147,8 +147,9 @@ STATICFILES_DIRS = [
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = config('EMAIL_USER')
+# EMAIL_HOST_USER = config('EMAIL_USER')
+EMAIL_HOST_USER = "nayankala2120@gmail.com"
 # EMAIL_HOST_PASSWORD =
-EMAIL_PORT = config('EMAIL_PORT',cast=int)
-
-django_heroku.settings(locals())
+# EMAIL_PORT = config('EMAIL_PORT',cast=int)
+EMAIL_PORT = 587
+# django_heroku.settings(locals())
