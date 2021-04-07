@@ -8,7 +8,13 @@
     {% for post in posts  %}
     <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 my-4 position-relative">
         <div class="col p-4 d-flex flex-column position-static">
-            <a class="text-dark" href="/blog/{{post.slug}}"><h3 class="mb-0">{{post.title}}</h3></a>
+            <div>
+                <a class="text-dark" href="/blog/{{post.slug}}"><h3 class="mb-0" style="display: inline-block;">{{post.title}}</h3></a> 
+                {% if user.is_authenticated and user == post.author %}
+                    <a href="/blog/edit/{{post.slug}}" role="button" class="mx-2 mb-2 btn btn-outline-info">Edit</a>
+                    <a href="/blog/delete/{{post.slug}}" role="button" class=" mb-2 btn btn-outline-danger">Delete</a>
+                {% endif %}
+            </div>
             <div class="mb-1 text-muted"><span class="badge badge-secondary">{{post.timeStamp}}</span> | Article by <a class="text-dark" href="/profile/{{post.author.username}}">{{post.author}}</a><span > | {{post.views}} views</span></div>
             <div class="mb-1 text-muted" style="font-size: large;">
                 Categories :&nbsp;    

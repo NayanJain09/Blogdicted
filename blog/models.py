@@ -17,15 +17,17 @@ class Post(models.Model):
     # categories = models.ForeignKey(Category,on_delete=models.DO_NOTHING,null=True, blank=True)
     categories = models.ManyToManyField(Category)
     views= models.IntegerField(default=0)
-    slug = models.SlugField(max_length=250,unique_for_date='timeStamp')
+    slug = models.SlugField(max_length=250,unique=True)
     timeStamp=models.DateTimeField(auto_now=True)
     content=models.TextField()
     def save(self,*args,**kwargs): 
-        t = datetime.now()
-        s = t.strftime("%H:%M:%S.%f")
-        string = "%s-%s" % (s,self.title)
-        self.slug = slugify(string) 
-        super(Post,self).save()
+        if len(self.slug)==0:    
+            # print('SLUG LENGTH',self.slug)
+            t = datetime.now()
+            s = t.strftime("%H:%M:%S.%f")
+            string = "%s-%s" % (s,self.title)
+            self.slug = slugify(string)
+        super(Post,self).save() 
 
     def __str__(self):
         return self.title + " by " + self.author.username

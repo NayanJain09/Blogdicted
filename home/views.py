@@ -51,19 +51,14 @@ def contact(request):
     return render(request,'home/contact.html')
 
 def profile(request,name):
-    if request.user.is_authenticated:
         author = User.objects.filter(username=name).first()
         posts = Post.objects.filter(author=author)
         context={
             'author':author,
             'posts' : posts
-        }
-        if author is not None:
-            print(author.get_full_name,author.username,author.email) 
-    else:
-        messages.warning(request,'Login to view profile')
-        return redirect('/')   
-    return render(request,'home/about.html',context)
+        } 
+        # print('inside PPPPPPPPPPPPPPPPPP',author.username)
+        return render(request,'home/about.html',context)
 
 def search(request):
     query=request.GET['query']

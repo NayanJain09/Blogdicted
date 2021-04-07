@@ -37,7 +37,6 @@ def blogPost(request, slug):
         else:
             replyDict[reply.parent.sno].append(reply)
     if post is None:
-        print(post,slug,comments,replies)
         messages.warning(request,'Blog Not found!')
     if post is not None:
         post.views= post.views+1
@@ -67,7 +66,6 @@ def postComment(request):
         postSno =request.POST.get('postSno')
         post= Post.objects.get(sno=postSno)
         parentSno= request.POST.get('parentSno')
-        print('AAAAAAAAAAAAAAAAA',parentSno)
         if parentSno is None:
             comment=request.POST.get('comment')
             comment=BlogComment(comment= comment, user=user, post=post)
@@ -76,7 +74,6 @@ def postComment(request):
         else:
             comment=request.POST.get('reply')
             parent = BlogComment.objects.filter(sno=parentSno).first()
-            print('AAAAAAAAAAA',parent.comment)
             comment=BlogComment(comment= comment, user=user, post=post , parent=parent)
             comment.save()
             messages.success(request, "Your reply has been posted successfully")
@@ -86,13 +83,10 @@ def postComment(request):
 
 def create(request):
     if request.method=='POST':
-        print('AAAAAAAAAAAAAAAAAAAAA')
         title = request.POST.get('title')
         content = request.POST.get('mytextarea')
         author = request.user
         categories=request.POST.getlist('category')
-        print('AAAAAAAAAAAA',categories)
-        # slug = slugify(title)
         post = Post(title=title,content=content,author=author)
         post.save()
         fields=[]
@@ -111,3 +105,51 @@ def create(request):
     categories=Category.objects.all()
     context={'categories':categories}     
     return render(request,'blog/create.html',context)
+
+def editBlog(request,slug):
+    post = Post.objects.get(slug=slug)
+    if request.method=='POST':
+        title = request.POST.get('title')
+        content = request.POST.get('mytextarea')
+        author = request.user
+        categories=request.POST.getlist('category')
+        post.title=title
+        post.content=content
+        post.author=author
+        post.slug=slug
+        post.save()
+        fields=[]
+        for category in categories:
+            fields.append(Category.objects.filter(title=category).first())
+        if len(fields)==0:
+            fields.append(Category.objects.filter(title='Others').first())
+        post.categories.set(fields)
+        post.save(slug=slug)    
+        messages.success(request,'Successully edited')
+        return redirect(f"/blog/{post.slug}")
+    else:    
+        if request.user==post.author:
+            categories=Category.objects.all()
+            fields=[]
+            for category in post.categories.all():
+                fields.append(Category.objects.get(title=category))
+            context = {'post':post,'categories':categories,'postcategories':fields}
+            return render(request,'blog/editBlog.html',context)
+        else:
+            messages.warning(request,'You are not authorized to edit the blog!')
+            return redirect('/')    
+
+def deleteBlog(request,slug):
+    post = Post.objects.filter(slug=slug).first()
+    if request.user==post.author:
+        author = User.objects.filter(username=post.author.username).first()
+        Post.objects.filter(slug=slug).first().delete()
+        posts = Post.objects.filter(author=author)
+        context={
+            'author':author,
+            'posts' : posts
+        } 
+        return render(request,'home/about.html',context)
+    else:
+        messages.warning(request,'You are not authorized to delete the blog!')
+        return redirect('/')
