@@ -38,16 +38,18 @@ def contact(request):
         msg = request.POST['content']
         contact = Contact(name=name,email=email,phone=phone,content=msg)
         contact.save()
-        subject = "Website Inquiry" 
-        body = {
-			'name':name, 
-			'email': email, 
-			'message':msg, 
-		}
+        # subject = "Website Inquiry" 
+        # body = {
+		# 	'name':name, 
+		# 	'email': email, 
+		# 	'message':msg, 
+		# }
 	    
-        message = "\n".join(body.values())
+        # message = "\n".join(body.values())
+        # messages.success(request,'Submitted Successfully')
+        # send_mail(subject,message, settings.EMAIL_HOST_USER,[settings.EMAIL_HOST_USER], fail_silently=False)
         messages.success(request,'Submitted Successfully')
-        send_mail(subject,message, settings.EMAIL_HOST_USER,[settings.EMAIL_HOST_USER], fail_silently=False)
+    
     return render(request,'home/contact.html')
 
 def profile(request,name):
@@ -61,7 +63,7 @@ def profile(request,name):
         return render(request,'home/about.html',context)
 
 def search(request):
-    query=request.GET['query']
+    query=request.POST['query']
     if len(query)>100:
         allPosts=Post.objects.none()
     else:
@@ -121,7 +123,7 @@ def handleSignUp(request):
     else:
        return redirect('home')
 
-def handeLogin(request):
+def handleLogin(request):
     if request.method=="POST":
         # Get the post parameters
         loginusername=request.POST['loginusername']
@@ -138,7 +140,7 @@ def handeLogin(request):
 
     return HttpResponse("404- Not found")
 
-def handelLogout(request):
+def handleLogout(request):
     logout(request)
     messages.success(request, "Successfully logged out")
     return redirect('home')

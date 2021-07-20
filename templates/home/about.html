@@ -18,18 +18,20 @@
         {% for post in posts%}
        <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 my-4 position-relative">
         <div class="col p-4 d-flex flex-column position-static">
-            <strong class="d-inline-block mb-2 text-primary">Article  by {{post.author}} 
+              <span><h3 class="mb-0 text-dark" style="display: inline-block;">{{post.title}}</h3></span> 
               {% if user.is_authenticated and user == post.author %}
               <a href="/blog/edit/{{post.slug}}" role="button" class="mx-2 btn btn-outline-info">Edit</a>
               <a href="/blog/delete/{{post.slug}}" role="button" class="btn btn-outline-danger">Delete</a>
               {% endif %}
-              </strong>
-            <a class="text-dark" href="/blog/{{post.slug}}"><h3 class="mb-0">{{post.title}}</h3></a>
-            <div class="mb-1 text-muted">{{post.timeStamp}}</div>
+            
+         
+              <div class="mb-1 text-muted">
+                <span class="badge badge-secondary">{{post.timeStamp}}</span><span> | <b>{{post.views}}</b> views</span>
+              </div>
             <div class="mb-1 text-muted" style="font-size: large;">
               Categories :&nbsp;    
              {% for category in post.categories.all %}
-              <span class="badge badge-secondary" style="background-color: black;"><a href="/category/{{category.title}}" class="text-light">{{category.title}}</a></span>
+              <span class="badge badge-secondary" style="background-color: black;"><a href="/blog/category/{{category.title}}" class="text-light">{{category.title}}</a></span>
               {% endfor %}
             </div>
           <br>

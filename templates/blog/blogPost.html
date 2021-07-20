@@ -14,7 +14,7 @@
     <div class="mb-1">
       Categories :&nbsp;    
      {% for category in post.categories.all %}
-      <span class="badge badge-secondary" id="btog" style="background-color: black;"><a href="/category/{{category.title}}" class="text-light">{{category.title}}</a></span>
+      <span class="badge badge-secondary" id="btog" style="background-color: black;"><a href="/blog/category/{{category.title}}" class="text-light">{{category.title}}</a></span>
       {% endfor %}
     </div>
     <hr>
@@ -112,10 +112,8 @@
     class="btn btn-outline-info my-2"
     style="margin-left: 10%"
     type="button"
-    data-toggle="collapse"
-    data-target="#replyBox{{comment.sno}}"
-    aria-expanded="false"
-    aria-controls="replyBox{{comment.sno}}"
+    data-toggle="modal"
+    data-target="#loginModal"
   >
     Login to reply
   </button>

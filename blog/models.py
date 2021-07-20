@@ -18,7 +18,7 @@ class Post(models.Model):
     categories = models.ManyToManyField(Category)
     views= models.IntegerField(default=0)
     slug = models.SlugField(max_length=250,unique=True)
-    timeStamp=models.DateTimeField(auto_now=True)
+    timeStamp=models.DateTimeField(auto_now_add=True)
     content=models.TextField()
     def save(self,*args,**kwargs): 
         if len(self.slug)==0:    
