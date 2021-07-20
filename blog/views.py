@@ -149,6 +149,7 @@ def deleteBlog(request,slug):
             'author':author,
             'posts' : posts
         } 
+        messages.success(request,"Blog Deleted Successfully! Redirected to your profile.")
         return render(request,'home/about.html',context)
     else:
         messages.warning(request,'You are not authorized to delete the blog!')

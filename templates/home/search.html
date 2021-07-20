@@ -8,7 +8,7 @@
 <div class="container my-3">
     <h2 style="color: slateblue;">Search results : </h2>
     {% if allPosts|length < 1 %}
-   <p>No search results</p>
+    <br>
     Your search query : <b>{{query}}</b> did not match any documents. <br>
     Suggestions:
     <ul>
@@ -25,7 +25,7 @@
                 <span><h3 class="mb-0 text-dark" style="display: inline-block;">{{post.title}}</h3></span> 
                 {% if user.is_authenticated and user == post.author %}
                     <a href="/blog/edit/{{post.slug}}" role="button" class="mx-2 mb-2 btn btn-outline-info">Edit</a>
-                    <a href="/blog/delete/{{post.slug}}" role="button" class=" mb-2 btn btn-outline-danger">Delete</a>
+                    <a href="/blog/delete/{{post.slug}}" role="button" class=" mb-2 btn btn-outline-danger" onclick="return confirm('Are you sure you want to delete this blog?');">Delete</a>
                 {% endif %}
             </div>
             <div class="mb-1 text-muted"><span class="badge badge-secondary">{{post.timeStamp}}</span> | Article by <a class="text-dark" href="/profile/{{post.author.username}}">{{post.author}}</a><span > | <b>{{post.views}}</b> views</span></div>

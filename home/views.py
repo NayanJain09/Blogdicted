@@ -63,7 +63,7 @@ def profile(request,name):
         return render(request,'home/about.html',context)
 
 def search(request):
-    query=request.POST['query']
+    query=request.GET['query']
     if len(query)>100:
         allPosts=Post.objects.none()
     else:
